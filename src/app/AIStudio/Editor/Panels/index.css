@@ -1,0 +1,40 @@
+.sp-frame {
+	position: absolute;
+	transition: all 0.3s ease-in-out;
+	opacity: 0;
+	top: 5px;
+	left: 5px;
+	bottom: 5px;
+	right: 5px;
+	box-shadow: 0 0 5px dodgerblue;
+	z-index: -2147483647;
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.sp-frame-n {
+	top: 5px;
+	bottom: 50%;
+	opacity: 1;
+	z-index: 2147483647;
+}
+
+.sp-frame-s {
+	top: 50%;
+	bottom: 5px;
+	opacity: 1;
+	z-index: 2147483647;
+}
+
+.sp-frame-e {
+	left: 50%;
+	right: 5px;
+	opacity: 1;
+	z-index: 2147483647;
+}
+
+.sp-frame-w {
+	left: 5px;
+	right: 50%;
+	opacity: 1;
+	z-index: 2147483647;
+}

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  minReadySeconds: 120
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0%
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: frontend
+        image: $ECR_REPO:$IMAGE_TAG
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 5
+          httpGet:
+            path: /
+            port: 80
+        resources:
+          requests:
+            memory: 300Mi
+            cpu: 200m
+          limits:
+            memory: 500Mi
+            cpu: 400m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+spec:
+  minReplicas: 2
+  maxReplicas: 50
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 200Mi

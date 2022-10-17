@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: darkslategray;
+}
+
+.styled-scrollbar {
+  scrollbar-gutter: stable both-edges;
+  border-radius: 0.75rem;
+}
+
+.styled-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 0.75rem;
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 0.75rem;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; 
+}

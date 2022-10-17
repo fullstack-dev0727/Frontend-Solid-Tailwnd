@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1"
+		/>
+		<meta
+			name="theme-color"
+			content="#000000"
+		/>
+		<!-- <link
+			rel="shortcut icon"
+			type="image/ico"
+			href="/src/assets/favicon.ico"
+		/> -->
+		<link
+			rel="icon"
+			href="/src/assets/favicon.ico"
+			sizes="any"
+		/>
+		<link
+			rel="icon"
+			href="/src/assets/favicon.svg"
+			type="image/svg+xml"
+		/>
+		<title>BHuman</title>
+
+		<!-- <link
+			rel="preload"
+			as="font"
+			href="/src/assets/fonts/Inter-VariableFont_slnt,wght.ttf"
+			type="font/truetype"
+			crossorigin="anonymous"
+		/> -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			@font-face {
+				font-family: "Manrope";
+				font-weight: 100 900;
+				font-style: normal;
+				font-display: swap;
+				font-named-instance: "Regular";
+				src: url("/src/assets/fonts/Manrope[wght].woff2") format("woff2");
+			}
+
+			@font-face {
+				font-family: "Inter";
+				font-weight: 100 900;
+				font-style: normal;
+				font-display: swap;
+				font-named-instance: "Regular";
+				src: url("/src/assets/fonts/Inter-VariableFont_slnt,wght.ttf")
+					format("truetype");
+			}
+		</style>
+		<script>
+			!(function () {
+				var analytics = (window.analytics = window.analytics || [])
+				if (!analytics.initialize)
+					if (analytics.invoked)
+						window.console &&
+							console.error &&
+							console.error("Segment snippet included twice.")
+					else {
+						analytics.invoked = !0
+						analytics.methods = [
+							"trackSubmit",
+							"trackClick",
+							"trackLink",
+							"trackForm",
+							"pageview",
+							"identify",
+							"reset",
+							"group",
+							"track",
+							"ready",
+							"alias",
+							"debug",
+							"page",
+							"once",
+							"off",
+							"on",
+							"addSourceMiddleware",
+							"addIntegrationMiddleware",
+							"setAnonymousId",
+							"addDestinationMiddleware",
+						]
+						analytics.factory = function (e) {
+							return function () {
+								var t = Array.prototype.slice.call(arguments)
+								t.unshift(e)
+								analytics.push(t)
+								return analytics
+							}
+						}
+						for (var e = 0; e < analytics.methods.length; e++) {
+							var key = analytics.methods[e]
+							analytics[key] = analytics.factory(key)
+						}
+						analytics.load = function (key, e) {
+							var t = document.createElement("script")
+							t.type = "text/javascript"
+							t.async = !0
+							t.src =
+								"https://cdn.segment.com/analytics.js/v1/" +
+								key +
+								"/analytics.min.js"
+							var n = document.getElementsByTagName("script")[0]
+							n.parentNode.insertBefore(t, n)
+							analytics._loadOptions = e
+						}
+						analytics._writeKey = "mbwkoSrGJgDT9CF7Kl6ws132R1WBB0ry"
+						analytics.SNIPPET_VERSION = "4.15.3"
+						analytics.load("mbwkoSrGJgDT9CF7Kl6ws132R1WBB0ry")
+						analytics.page()
+					}
+			})()
+		</script>
+		<!-- Facebook Pixel Code -->
+		<script>
+			!(function (f, b, e, v, n, t, s) {
+				if (f.fbq) return
+				n = f.fbq = function () {
+					n.callMethod
+						? n.callMethod.apply(n, arguments)
+						: n.queue.push(arguments)
+				}
+				if (!f._fbq) f._fbq = n
+				n.push = n
+				n.loaded = !0
+				n.version = "2.0"
+				n.queue = []
+				t = b.createElement(e)
+				t.async = !0
+				t.src = v
+				s = b.getElementsByTagName(e)[0]
+				s.parentNode.insertBefore(t, s)
+			})(
+				window,
+				document,
+				"script",
+				"https://connect.facebook.net/en_US/fbevents.js"
+			)
+			fbq("init", "1253354965476758")
+			fbq("track", "PageView")
+		</script>
+		<noscript>
+			<img
+				height="1"
+				width="1"
+				src="https://www.facebook.com/tr?id=1253354965476758&ev=PageView
+	&noscript=1"
+			/>
+		</noscript>
+		<!-- End Facebook Pixel Code -->
+		<script src="https://script.tapfiliate.com/tapfiliate.js" type="text/javascript" async></script>
+		<script type="text/javascript">
+			(function(t,a,p){t.TapfiliateObject=a;t[a]=t[a]||function(){
+			(t[a].q=t[a].q||[]).push(arguments)}})(window,'tap');
+
+			tap('create', '35081-205a3d', { integration: "npm-module" });
+			tap('detect');
+		</script>
+	</head>
+	<body>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root"></div>
+
+		<script
+			src="/src/index.tsx"
+			type="module"
+		></script>
+	</body>
+</html>

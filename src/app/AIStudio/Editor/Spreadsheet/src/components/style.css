@@ -1,0 +1,14 @@
+.sheet-body::-webkit-scrollbar-thumb {
+	background: #888;
+	display: none;
+	border-radius: 2px;
+}
+
+.sheet-body::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.sheet-body:hover::-webkit-scrollbar-thumb {
+	display: block;
+}

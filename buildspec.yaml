@@ -1,0 +1,53 @@
+version: 0.2
+
+env:
+  git-credential-helper: yes
+  secrets-manager:
+    IMAGE_BUCKET: "/bhuman/$Environment:IMAGE_BUCKET"
+    ASSETS_BUCKET: "/bhuman/$Environment:ASSETS_BUCKET"
+    TMP_BUCKET: "/bhuman/$Environment:TMP_BUCKET"
+    STATIC_BUCKET: "/bhuman/$Environment:STATIC_BUCKET"
+    PERSONA_BUCKET: "/bhuman/$Environment:PERSONA_BUCKET"
+    S3_REGION: "/bhuman/$Environment:S3_REGION"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16.x
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+  build:
+    commands:
+      - SHORT=$(echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" | cut -c -6)
+      - IMAGE_TAG=$(echo "$BRANCH-$SHORT-$CODEBUILD_BUILD_NUMBER")
+      - echo Build started on `date`
+      - git config --global url."https://github.com/bhuman-ai".insteadOf https://github.com/bhuman-ai
+      - node predeploy
+      - touch .env
+      - echo "VITE_IMAGE_BUCKET=$IMAGE_BUCKET" > .env
+      - echo "VITE_ASSETS_BUCKET=$ASSETS_BUCKET" >> .env
+      - echo "VITE_TMP_BUCKET=$TMP_BUCKET" >> .env
+      - echo "VITE_STATIC_BUCKET=$STATIC_BUCKET" >> .env
+      - echo "VITE_PERSONA_BUCKET=$PERSONA_BUCKET" >> .env
+      - echo "VITE_S3_REGION=$S3_REGION" >> .env
+      - |
+        if [ "$BRANCH" = "main" ]; then
+          npm install && npm run build && cd website &&  echo "NEXT_PUBLIC_MODE=.prod" > .env && npm run build && npx next export -o ../dist/main_site && cd ..
+        elif [ "$BRANCH" = "stage" ]; then
+          npm install && npm run build-stage && cd website && echo "NEXT_PUBLIC_MODE=.stage" > .env && npm install && npm run build && npx next export -o ../dist/main_site && cd ..
+        else
+          npm install && npm run build-dev && cd website && echo "NEXT_PUBLIC_MODE=.dev" > .env && npm run build && npx next export -o ../dist/main_site && cd ..
+        fi
+      - docker build --no-cache --build-arg account=$AWS_ACCOUNT_ID --build-arg region=$AWS_REGION -t $ECR_REPO:$IMAGE_TAG .
+      - |
+        if [ $? -eq 0 ]; then
+          echo "Build Successful !!!"
+        else
+          echo "Fail !!!" && exit 1
+        fi
+      - docker push $ECR_REPO:$IMAGE_TAG
+      - aws eks update-kubeconfig --name $EKS_CLUSTER --region $AWS_REGION
+      - envsubst < kube/$Environment/deployment.tmpl > kube/$Environment/deployment.yaml
+      - kubectl apply -f kube/$Environment/deployment.yaml -n $Environment
+      - echo "Build completed -- $IMAGE_TAG"

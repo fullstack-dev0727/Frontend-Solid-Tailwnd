@@ -1,0 +1,7 @@
+node_modules
+dist
+src/canvas_timeline/
+# Local Netlify folder
+.netlify
+deploy.sh
+website/
